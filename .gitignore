@@ -1,0 +1,9 @@
+data/*
+.cache
+DOL.txt
+LAMPdeveloper
+.idea
+GensimTutorial.py
+lampToWebDeveloper.py
+lampToComputerProgrammers.py
+*.pyc

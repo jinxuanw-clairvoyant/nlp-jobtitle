@@ -10,16 +10,17 @@ f = codecs.open('bullhorn.txt', encoding='utf-8', mode='r')
 
 queryList = [line.strip() for line in f if line.strip() != '']
 
-countOfFile = 0
+countOfFile = 201
 for query in queryList:
-    #Change
+    if countOfFile > 400:
+        break
     query = filter(lambda x: x in string.printable, query)
-    googleResultGenerator = google.search('bullhorn ' + query)
+    googleResultGenerator = google.search('site:bullhornreach.com ' + query)
     print "current querying bullhorn" + query
     countOfGoogleResultInOnePage = 0
     fileName = "Output" +str(countOfFile) + '.txt'
     resultOfOneQuery = ""
-    JobTitle = ""
+    JobTitle = query
     for googleResultOfOneQuery in googleResultGenerator:
         print "current result is " + str(countOfGoogleResultInOnePage)
         if countOfGoogleResultInOnePage > 5:
@@ -35,11 +36,9 @@ for query in queryList:
             if(title == None):
                 continue
             else:
-                JobTitle = title.text
                 [s.extract() for s in soup(['style', 'script', '[document]', 'head', 'title'])]
                 visible_text = soup.getText()
                 resultOfOneQuery += filter(lambda x: x in string.printable, visible_text)
-                break
         countOfGoogleResultInOnePage+=1
 
     if resultOfOneQuery.strip() != "":

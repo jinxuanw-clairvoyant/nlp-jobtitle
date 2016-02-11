@@ -2,7 +2,7 @@ import logging
 import string
 import sys
 from pprint import pprint
-
+import re
 import requests
 from bs4 import BeautifulSoup
 from gensim import corpora, models, similarities
@@ -42,11 +42,13 @@ documents = taskList
 
 #Process the task list, such as tokenized, stemming, remove stop words
 
-texts_tokenized = [[word.lower().translate(string.punctuation) for word in word_tokenize(document.decode('utf-8'))] for document in documents]
+texts_tokenized = [[re.sub('[^a-zA-Z0-9-_*.]', '', word.lower()) for word in word_tokenize(document.decode('utf-8'))] for document in documents]
+
+texts_tokenized = [filter(None, textList) for textList in texts_tokenized]
 
 english_stopwords = stopwords.words('english')
 
-texts_filtered_stopwords = [[word for word in document if not word in english_stopwords] for document in texts_tokenized]
+texts_filtered_stopwords = [[word for word in document if word not in english_stopwords] for document in texts_tokenized]
 
 from nltk.stem.lancaster import LancasterStemmer
 
@@ -88,16 +90,24 @@ lsi.print_topics(2)
 
 vec_lsi = lsi[vec_bow]
 
-print lsi.show_topic(2)
+print("Top topic for the whole document set:")
+
+pprint(lsi.show_topic(2))
 
 index = similarities.MatrixSimilarity(lsi[corpus]) # transform corpus to LSI space and index it
 
 sims = index[vec_lsi]
 
+
 sims = sorted(enumerate(sims), key=lambda item: -item[1])
 
 #print sims
 simID = map(lambda x:(x[1], jobTitleList[x[0]]), sims)
+
+print " Match result :"
+
+print "+------------+-------------------+"
+print "|----Score---+-------Title-------|"
 
 pprint(simID)
 
