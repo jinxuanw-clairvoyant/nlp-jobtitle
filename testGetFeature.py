@@ -21,9 +21,9 @@ corpora.MmCorpus.serialize('/tmp/deerwester.mm', corpus) # store to disk, for la
 corpus = corpora.MmCorpus('/tmp/deerwester.mm') # comes from the first tutorial, "From strings to vectors"
 numTopics = 2
 lsi = models.LsiModel(corpus, id2word=dictionary, num_topics=numTopics)
-index = Similarity('/tmp/tst', lsi[corpus], num_features=numTopics)
+gensimIndex = Similarity('/tmp/tst', lsi[corpus], num_features=numTopics)
 vec_bow = dictionary.doc2bow(new_doc.lower().split())
 vec_lsi = lsi[vec_bow]
-sims = index[vec_lsi]
+sims = gensimIndex[vec_lsi]
 sims = sorted(enumerate(sims), key=lambda item: -item[1])
 print sims

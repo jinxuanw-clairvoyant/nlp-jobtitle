@@ -16,12 +16,12 @@ DBName = "bullhorn"
 db = MySQLdb.connect(mySQLUrl, userName, passwd, DBName, charset='utf8', use_unicode=True)
 cursor = db.cursor()
 
-filePrefix = "jOutput"
+filePrefix = "Output"
 
-for i in range(0,6):
+for i in range(1, 400):
     filename = filePrefix + str(i)
 
-    file = open("./data/" + filename + '.txt', 'r')
+    file = open("./data/" + filename, 'r')
     fileContent = file.read()
     content_index = fileContent.index('\n')
     bullHornjobTitle = fileContent[0:content_index]

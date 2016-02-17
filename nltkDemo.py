@@ -94,9 +94,9 @@ print("Top topic for the whole document set:")
 
 pprint(lsi.show_topic(2))
 
-index = similarities.MatrixSimilarity(lsi[corpus]) # transform corpus to LSI space and index it
+gensimIndex = similarities.MatrixSimilarity(lsi[corpus]) # transform corpus to LSI space and index it
 
-sims = index[vec_lsi]
+sims = gensimIndex[vec_lsi]
 
 
 sims = sorted(enumerate(sims), key=lambda item: -item[1])
