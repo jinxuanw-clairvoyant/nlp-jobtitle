@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request, g
 from generateCorpus import generateCorpus
 from gensim import corpora, models
 from gensim.similarities import Similarity
-from flask import current_app
+from flask.ext.cors import CORS
 import MySQLdb
 
 mySQLUrl = "localhost"
@@ -13,7 +13,7 @@ DBName = "bullhorn"
 db = MySQLdb.connect(mySQLUrl, userName, passwd, DBName, charset='utf8', use_unicode=True)
 
 app = Flask(__name__)
-
+CORS(app)
 
 resultTuple = generateCorpus()
 dictionary = resultTuple['dictionary']
@@ -72,6 +72,7 @@ def index():
         sortedVecList = sorted(vec_lsi, key=lambda x:-x[1])
         top10feature = [str(round(vec[1], 5))  for vec in sortedVecList[0:10]]
         dictForOneResult['featuresListScore'] = " ".join(top10feature)
+        dictForOneResult['socID'] = socCode
         resultDict['mathResults'].append(dictForOneResult);
     return jsonify(resultDict)
 
